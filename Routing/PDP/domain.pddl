@@ -1,6 +1,5 @@
-; domaine qui représente le PDP (Pick up and delivery problem) générale, où il y a un ensemble de colis dans les localisations différentes
-; qui doivent être collectés et déposés à leurs destinations
-
+; PDP domain (Pick up and delivery problem) , multiple packages from multiple origins have to be dilvered to 
+; multiple destinations, with multiple trucks , uncapacitated (very general form of the problem)
 
 (define (domain PDP)
     (:requirements :strips :typing )
