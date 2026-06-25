@@ -22,6 +22,12 @@ Execution:
 
             java -cp bin Solver <problem name>
             
-note: the problem in question has to be one of the original miconic problems from the IPC competition (found in original_pbs/Elevator/), Do not write the path name while executing, only the problem name:
-ex: 
+note: the problem in question has to be one of the original miconic problems from the IPC competition (found in original_pbs/Elevator/). 
+
+Do not write the path name while executing, only the problem name:
+
+
+Example: 
             java -cp bin Solver pb150
+            
+            
