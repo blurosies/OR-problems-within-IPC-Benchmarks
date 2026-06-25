@@ -28,6 +28,7 @@ Do not write the path name while executing, only the problem name:
 
 
 Example: 
+
             java -cp bin Solver pb150
             
             
