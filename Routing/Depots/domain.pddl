@@ -9,17 +9,17 @@
 
 (:predicates (at ?x - locatable ?y - place) 
              (on ?x - crate ?y - surface)
-             (in ?x - crate ?y - truck)
              (lifting ?x - hoist ?y - crate)
              (available ?x - hoist)
              (clear ?x - surface)
-             (next-step ?p1 - place ?p2 - place ?t - truck )
 )
 	
 (:action move
-:parameters (?x - truck ?y - place ?z - place) 
-:precondition (and (at ?x ?y) (next-step ?y ?z ?x ))
-:effect (and (not (at ?x ?y)) (at ?x ?z)))
+:parameters (?h1 - hoist ?c - crate ?from - place ?h2 - hoist ?to - place)
+    :precondition (and (at ?h1 ?from) (lifting ?h1 ?c) (at ?h2 ?to) (available ?h2))
+    :effect (and (not (lifting ?h1 ?c)) (available ?h1) 
+                 (lifting ?h2 ?c) (not (available ?h2)))             
+)
 
 (:action Lift
 :parameters (?x - hoist ?y - crate ?z - surface ?p - place)
@@ -32,15 +32,5 @@
 :precondition (and (at ?x ?p) (at ?z ?p) (clear ?z) (lifting ?x ?y))
 :effect (and (available ?x) (not (lifting ?x ?y)) (at ?y ?p) (not (clear ?z)) (clear ?y)
 		(on ?y ?z)))
-
-(:action Load
-:parameters (?x - hoist ?y - crate ?z - truck ?p - place)
-:precondition (and (at ?x ?p) (at ?z ?p) (lifting ?x ?y))
-:effect (and (not (lifting ?x ?y)) (in ?y ?z) (available ?x)))
-
-(:action Unload 
-:parameters (?x - hoist ?y - crate ?z - truck ?p - place)
-:precondition (and (at ?x ?p) (at ?z ?p) (available ?x) (in ?y ?z))
-:effect (and (not (in ?y ?z)) (not (available ?x)) (lifting ?x ?y)))
 
 )
