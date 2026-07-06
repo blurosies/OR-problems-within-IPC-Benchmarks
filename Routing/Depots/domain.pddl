@@ -1,7 +1,7 @@
 ; Depots domain without the routing problem
 
 (define (domain Depot)
-(:requirements :typing)
+(:requirements :typing :equality)
 (:types place locatable - object
 	depot distributor - place
         truck hoist surface - locatable
@@ -16,7 +16,7 @@
 	
 (:action move
 :parameters (?h1 - hoist ?c - crate ?from - place ?h2 - hoist ?to - place)
-    :precondition (and (at ?h1 ?from) (lifting ?h1 ?c) (at ?h2 ?to) (available ?h2))
+    :precondition (and (at ?h1 ?from) (lifting ?h1 ?c) (at ?h2 ?to) (available ?h2) (not(= ?from ?to)))
     :effect (and (not (lifting ?h1 ?c)) (available ?h1) 
                  (lifting ?h2 ?c) (not (available ?h2)))             
 )

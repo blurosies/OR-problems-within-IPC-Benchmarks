@@ -12,23 +12,13 @@ Execution:
 
 
 
-How to use the miconic path finder: (later on, general path finder)
+How to use the solver 
 
-Compilation:
+            args: Domain, problem number
 
-            javac -d bin Solver.java
+Validator command:
+            source ~/planning_env/bin/activate
+            source ~/planning_env/bin/planutils_activate
+            val Validate original_pbs/(DOMAIN)/domain.pddl original_pbs/(DOMAIN)/PROBLEM.pddl <PLAN>.txt
 
-Execution: 
-
-            java -cp bin Solver <problem name>
-            
-note: the problem in question has to be one of the original miconic problems from the IPC competition (found in original_pbs/Elevator/). 
-
-Do not write the path name while executing, only the problem name:
-
-
-Example: 
-
-            java -cp bin Solver pb150
-            
             

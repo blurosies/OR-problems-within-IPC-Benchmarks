@@ -1,98 +1,113 @@
-import re , os
+import re , os , sys
 import argparse , subprocess
 
-#TODO: make code more robust w error hadnling (for missing files & such)
 
-# For etape A, simply runs FD
-def runFD(domain, problem):
+def runFD (domain, problem, FDpath):
+    # modify the list to change FD args
+    res= subprocess.run([FDpath,"--alias","lama-first",domain, problem],capture_output=True, text=True)
 
-    #TODO:here i assume that fd is here, maybe change for later 
-    result = subprocess.run(["/home/ange/fast-downward/fast-downward.py", "--alias", "lama-first", domain, problem ], capture_output=True, text=True)
-    output = result.stdout + result.stderr
-    
+    if res.returncode!=0:
+        print("Error with FD execution, double check your paths", file=sys.stderr)
+        sys.exit(1)
+
+    output= res.stdout+res.stderr
+
     m = {"search time":0.0, "generated states":0, "plan length":0}
 
-    # looks at fast downward output for search time cause we only want the time the algo spent searching
-    time = re.search(r"Search time:\s*([\d\.]+)s", output)
-    m["search time"] = float(time.group(1))
-
+    time = re.search(r"Total time:\s*([\d\.]+)s", output)
     states = re.search(r"Generated\s*(\d+)\s*state\(s\)", output)
-    m["generated states"] = int(states.group(1))
-        
     planLength = re.search(r"Plan length:\s*(\d+)\s*step\(s\)", output)
+
+    if not time or not states or not planLength:
+        print("Error with FD output, double check your files", file=sys.stderr)
+        sys.exit(1)
+
+    m["search time"] = float(time.group(1))
+    m["generated states"] = int(states.group(1))
     m["plan length"] = int(planLength.group(1))
         
     return m
 
-# fct mal faite a refaire plus tard (ca fais longtemps que je n'ai pas fait du python )
-def getEffects(domain, action):
-    # first elem is the action name, rest are the args
-    actiondecoupe = action.replace("(", "").replace(")", "").split()
 
-    with open(domain, 'r') as f:
-        content = f.read().lower()
-        
-    act = content.find(f"(:action {actiondecoupe[0]}")
-    if act == -1:
-        return [], []
 
-    # parameeters of the action
-    start = content.find(":parameters", act)
-    end = content.find(")", start)
-    str = content[start:end+1]
+
+
+# update init state of next problem
+def geteffects (domain,action):
+    # 1st element is action name, rest are the action s args
+    actiondecoupe= action.replace("(","").replace(")","").split()
     
-    var = re.findall(r'(\?[a-zA-Z0-9_-]+)', str)
-    d = dict(zip(var, actiondecoupe[1:]))
+    try:
+        with open(domain, 'r') as f:
+            content = f.read().lower()
 
-    # effects of the action
-    eStart = content.find(":effect", act)
-    cpt = 0
-    eEnd = eStart
-
-    started = False
-    for i in range(eStart, len(content)):
-        if content[i] == '(':
-            cpt += 1
-            started = True
-        elif content[i] == ')':
-            cpt -= 1
-        if started and cpt == 0:
-            eEnd = i + 1
-            break
+            act = content.find(f"(:action {actiondecoupe[0]}")
+            if act == -1:
+                return [], []
             
-    eStr = content[eStart:eEnd]
+            #finfing params and effects
+            startP = content.find(":parameters", act)
+            startE = content.find(":effect", act)
 
-    #replacing w the real names that can be used in the micro pb
-    for var in sorted(var, key=len, reverse=True):
-        eStr = eStr.replace(var, d[var])
+            endP = content.find(")", startP)
+            # need parenthesis parsing to find end of effects
+            endE = startE
+
+            started = False
+            cpt=0
+            for i in range(startE, len(content)):
+                if content[i] == '(':
+                    cpt += 1
+                    started = True
+                elif content[i] == ')':
+                    cpt -= 1
+                if started and cpt == 0:
+                    endE = i + 1
+                    break
 
 
-    eStr = eStr.replace(":effect", "").strip()
-    if eStr.startswith("(and"):
-        eStr = eStr[4:-1].strip() 
+            parameters=content[startP:endP+1]
+            effects=content[startE:endE+1]
 
-    l = []
-    cpt2 = 0
-    curr = ""
-    for char in eStr:
-        curr += char
-        if char == '(':
-            cpt2 += 1
-        elif char == ')':
-            cpt2 -= 1
-            if cpt2 == 0:
-                l.append(curr.strip())
-                curr = ""
-                
-    pos = []
-    neg = []
-    for elem in l:
-        if elem.startswith("(not"):
-            neg.append(elem[4:-1].strip()) 
-        else:
-            pos.append(elem)
-    
-    return pos, neg
+            var = re.findall(r'(\?[a-zA-Z0-9_-]+)', parameters)
+            d = dict(zip(var, actiondecoupe[1:]))
+
+            for var in sorted(var, key=len, reverse=True):
+                effects = effects.replace(var, d[var])
+
+
+            effects = effects.replace(":effect", "").strip()
+            if effects.startswith("(and"):
+                effects = effects[4:-1].strip() 
+
+            l = []
+            cpt2 = 0
+            curr = ""
+            for char in effects:
+                curr += char
+                if char == '(':
+                    cpt2 += 1
+                elif char == ')':
+                    cpt2 -= 1
+                    if cpt2 == 0:
+                        l.append(curr.strip())
+                        curr = ""
+                        
+            pos = []
+            neg = []
+            for elem in l:
+                if elem.startswith("(not"):
+                    neg.append(elem[4:-1].strip()) 
+                else:
+                    pos.append(elem)
+            
+            return pos, neg
+            
+    except IOError:
+        print("geteffects: bad file")
+        sys.exit(1)
+
+
 
 
 
@@ -110,7 +125,7 @@ def generatePDDLProblem(initMemory, effectsPos, header, output):
     pddlProblem = f"""{header}
 (:init
         {initBlock}
-    
+)
 (:goal 
     {goal}
 )
@@ -120,6 +135,15 @@ def generatePDDLProblem(initMemory, effectsPos, header, output):
     
 
 
+
+
+
+
+
+
+
+
+###################################################################################
 
 if __name__ == "__main__": 
 
@@ -131,13 +155,12 @@ if __name__ == "__main__":
     originalDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/original_pbs/{args.domain}/domain.pddl"
     abstractDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/Routing/{args.domain}/domain.pddl"
     problem = f"/home/ange/OR-problems-within-IPC-Benchmarks/original_pbs/{args.domain}/pb{args.problem}.pddl"
+    FDpath="/home/ange/fast-downward/fast-downward.py"
     
 
-    # Etape A
-    mesuresEtapeA = runFD(abstractDomain, problem)
 
-    # the time, plan length and gen states for solving the pb with an abstract ver of PDP
-    print(f"Results: {mesuresEtapeA}")
+    # Etape A
+    mesuresEtapeA = runFD(abstractDomain, problem, FDpath)
 
 
     # Etape B
@@ -151,11 +174,8 @@ if __name__ == "__main__":
             if cleanLine and not cleanLine.startswith(";"):
                 actions.append(cleanLine)
 
-    print(f" Plan len for abstract PDP: {len(actions)}")
-
 
     # getting content for the pddl micro pbs
-
     with open(problem, 'r') as file:
         content = file.read()
     #limit where we want to stop copying
@@ -163,30 +183,49 @@ if __name__ == "__main__":
     j=content.lower().find("(:goal")
     header=content[:i]
 
-    init=content[i+7:j] # 7 bc the length of "(:init" and an empty space
-    init=init.split("\n")
+    init_u=content[i+7:j] # 7 bc the length of "(:init" and an empty space
+    #then we need to filter it because some problems are formatted differently
+
+    init = []
+    cpt = 0
+    currfact = ""
+    
+    for char in init_u:
+        if char == '(':
+            cpt += 1
+        if cpt > 0:
+            currfact += char
+            
+        if char == ')':
+            cpt -= 1
+            if cpt == 0:
+                if currfact.strip() != "":
+                    init.append(currfact.strip())
+                currfact = ""
 
     #the elems have a tab included so stripping all empty charas for later (when we wanna update the memory)
-    init = [fact.strip() for fact in init if fact.strip() != ""]
+    init = [fact.strip() for fact in init if fact.strip() != "" and fact.strip() != ")"]
 
 
     finalPlan = []
     searchTime=mesuresEtapeA["search time"]
     states=mesuresEtapeA["generated states"]
+    moveNB=0
 
 
     for index, action in enumerate(actions):
-        print(f"\n[pb {index + 1}/{len(actions)}]: {action}")
+        # print(f"\n[pb {index + 1}/{len(actions)}]: {action}")
         parts1 = action.replace("(", "").replace(")", "").split()
         plan = []
         
         if parts1[0] == "move":
+            moveNB+=1
             filename = f"tempPb{index}.pddl"
             
-            effectP, effectN = getEffects(abstractDomain, action)
+            effectP, effectN = geteffects(abstractDomain, action)
             generatePDDLProblem(init, effectP, header, filename)
 
-            mesures = runFD(originalDomain, filename) 
+            mesures = runFD(originalDomain, filename,FDpath) 
             searchTime += mesures["search time"]
             states += mesures["generated states"]
             
@@ -196,22 +235,19 @@ if __name__ == "__main__":
                     cleanLine = line.strip().lower()
 
                     if cleanLine and not cleanLine.startswith(";"):
-                        # gerer les doublons
-                        if not (cleanLine.startswith("(drop") or cleanLine.startswith("(lift")):
-                            plan.append(cleanLine)
-                            finalPlan.append(cleanLine)
-                    
+                        plan.append(cleanLine)
+                        finalPlan.append(cleanLine)
+                
             os.remove(filename)
             os.remove("sas_plan")
         else:
             plan.append(action)
             finalPlan.append(action)
 
-
         # update init
         for step in plan:
 
-            positif, negatif = getEffects(originalDomain, step)
+            positif, negatif = geteffects(originalDomain, step)
             
             for n in negatif:
                 if n in init:
@@ -222,9 +258,18 @@ if __name__ == "__main__":
                     init.append(p)
 
 
+# All results ############################################
+    print(f"----------------------------------------------------------------------\n")
+    print(f"Resolution for : {args.domain} problem number {args.problem}\n")
+    print(f"Stats taken for Abstract resolution:\n \n \t {mesuresEtapeA} \n")
+    print(f" Plan length: {len(actions)} \n Within this plan, there are {moveNB} move actions. \n \n")
+    print("Stats taken for the final generated Plan")
     print(f"\nFinal Plan Length: {len(finalPlan)}")
-    print(f"Total Search Time: {searchTime}")
+    print(f"Total Planner Time: {searchTime} second(s)")
     print(f"Total generated states: {states}")
+
+    print(f"\n \n Final plan saved in \"plan{args.domain}{args.problem}.txt\" ")
+    print(f"\n----------------------------------------------------------------------\n")
     
     with open(f"plan{args.domain}{args.problem}.txt", "w") as file:
         for action in finalPlan:
