@@ -1,10 +1,13 @@
 import re , os , sys
-import argparse , subprocess
+import argparse , subprocess, json
 
 
-def runFD (domain, problem, FDpath):
-    # modify the list to change FD args
-    res= subprocess.run([FDpath,"--alias","lama-first",domain, problem],capture_output=True, text=True)
+def runFD (domain, problem, FDpath, FDparameter):
+    #seq-opt-lmcut
+    #seq-sat-lama-2011
+    #lama-first
+
+    res= subprocess.run([FDpath,"--alias",FDparameter,domain, problem],capture_output=True, text=True)
 
     if res.returncode!=0:
         print("Error with FD execution, double check your paths", file=sys.stderr)
@@ -148,26 +151,29 @@ def generatePDDLProblem(initMemory, effectsPos, header, output):
 if __name__ == "__main__": 
 
     parser = argparse.ArgumentParser()
+    # compare arg: if we wish to compare this method with the original method, so it runs the problems with the devide and conquer method, saves everything to a json
+    # then runs everything with the normal FD way and saves to another json, that gives us material for the compare algo, not a required option
+    #if this argument is not provided, no json file will be generated
+    parser.add_argument("-c", action="store_true")
     parser.add_argument("domain", choices=["Depots", "Logistics", "miconic"])
     parser.add_argument("problem", type=str)
+    parser.add_argument("FDparameter", type=str, choices=["lama-first", "seq-opt-lmcut"])
+
     args = parser.parse_args()
 
     originalDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/original_pbs/{args.domain}/domain.pddl"
     abstractDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/Routing/{args.domain}/domain.pddl"
     problem = f"/home/ange/OR-problems-within-IPC-Benchmarks/original_pbs/{args.domain}/pb{args.problem}.pddl"
     FDpath="/home/ange/fast-downward/fast-downward.py"
-    
-
 
     # Etape A
-    mesuresEtapeA = runFD(abstractDomain, problem, FDpath)
+    mesuresEtapeA = runFD(abstractDomain, problem, FDpath, args.FDparameter)
 
 
     # Etape B
     # for each abstract move action, reconstruct the low lvl plan
     actions = []
 
-    #sas_plan exists
     with open("sas_plan", "r") as file:
         for line in file:
             cleanLine = line.strip().lower()
@@ -225,7 +231,7 @@ if __name__ == "__main__":
             effectP, effectN = geteffects(abstractDomain, action)
             generatePDDLProblem(init, effectP, header, filename)
 
-            mesures = runFD(originalDomain, filename,FDpath) 
+            mesures = runFD(originalDomain, filename,FDpath,args.FDparameter) 
             searchTime += mesures["search time"]
             states += mesures["generated states"]
             
@@ -268,12 +274,66 @@ if __name__ == "__main__":
     print(f"Total Planner Time: {searchTime} second(s)")
     print(f"Total generated states: {states}")
 
-    print(f"\n \n Final plan saved in \"plan{args.domain}{args.problem}.txt\" ")
-    print(f"\n----------------------------------------------------------------------\n")
     
-    with open(f"plan{args.domain}{args.problem}.txt", "w") as file:
+    with open(f"results/plans/plan{args.domain}{args.problem}.txt", "w") as file:
         for action in finalPlan:
             file.write(f"{action}\n")
-            
+
+    print(f"\n \n Final plan saved in \"plan{args.domain}{args.problem}.txt\" ")
+    print(f"\n----------------------------------------------------------------------\n")
+    ####################################################
+
+    if args.c :
+
+        problem_key = f"{args.domain}_{args.problem}"
+        res = {
+            "FD parameter": args.FDparameter,
+            "time": searchTime,
+            "planlength": len(finalPlan)
+        }
+
+        file = "results/ScriptRes.json"
+        data = {}
+        if os.path.exists(file):
+            try:
+                with open(file, "r") as json_file:
+                    data = json.load(json_file)
+            except json.JSONDecodeError:
+                print("Error with existing Json file")
+
+        data[problem_key] = res
+
+        with open(file, "w") as json_file:
+            json.dump(data, json_file, indent=4)
+        print(f"Mesurement results saved in \"ScriptRes.json\"\n \n")
+
+
+
+
+
+        print(f"Running Fast downward for problem {args.domain} {args.problem} \n")
+        mesures2= runFD(originalDomain, problem, FDpath, args.FDparameter)
+
+        res2 = {
+            "FD parameter": args.FDparameter,
+            "time": mesures2["search time"],
+            "planlength": mesures2["plan length"]
+        }
+
+        file2 = "results/FDRes.json"
+        data2 = {}
+        if os.path.exists(file2):
+            try:
+                with open(file2, "r") as json_file2:
+                    data2 = json.load(json_file2)
+            except json.JSONDecodeError:
+                print("Error with existing Json file")
+
+        data2[problem_key] = res2
+
+        with open(file2, "w") as json_file2:
+            json.dump(data2, json_file2, indent=4)
+        print(f"Mesurement results saved in \"FDRes.json\"\n \n")
+
 
     
