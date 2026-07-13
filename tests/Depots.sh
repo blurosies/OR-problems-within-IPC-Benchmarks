@@ -7,7 +7,7 @@ END=22
 for i in $(seq $START $END); do
     pad=$(printf "%02d" $i)
 
-    /usr/bin/python3 "$d/Solver.py" -c Depots $pad lama-first
+    /usr/bin/python3 "$d/Solver.py" --c Depots $pad seq-opt-lmcut
 
     val Validate original_pbs/Depots/domain.pddl original_pbs/Depots/pb${pad}.pddl results/plans/planDepots${pad}.txt
     

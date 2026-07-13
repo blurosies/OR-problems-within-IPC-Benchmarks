@@ -5,31 +5,41 @@ import argparse , subprocess, json
 def runFD (domain, problem, FDpath, FDparameter):
     #seq-opt-lmcut
     #seq-sat-lama-2011
-    #lama-first
-
-    res= subprocess.run([FDpath,"--alias",FDparameter,domain, problem],capture_output=True, text=True)
-
-    if res.returncode!=0:
-        print("Error with FD execution, double check your paths", file=sys.stderr)
-        sys.exit(1)
-
-    output= res.stdout+res.stderr
-
+    #lama-first     
     m = {"search time":0.0, "generated states":0, "plan length":0}
 
-    time = re.search(r"Total time:\s*([\d\.]+)s", output)
-    states = re.search(r"Generated\s*(\d+)\s*state\(s\)", output)
-    planLength = re.search(r"Plan length:\s*(\d+)\s*step\(s\)", output)
+    try:
+        res= subprocess.run([FDpath,"--alias",FDparameter,domain, problem],capture_output=True, text=True, timeout=600)
 
-    if not time or not states or not planLength:
-        print("Error with FD output, double check your files", file=sys.stderr)
-        sys.exit(1)
+        if res.returncode!=0:
+            print("Error with FD execution, double check your paths", file=sys.stderr)
+            sys.exit(1)
 
-    m["search time"] = float(time.group(1))
-    m["generated states"] = int(states.group(1))
-    m["plan length"] = int(planLength.group(1))
-        
-    return m
+        output= res.stdout+res.stderr
+
+
+        time = re.search(r"Total time:\s*([\d\.]+)s", output)
+        states = re.search(r"Generated\s*(\d+)\s*state\(s\)", output)
+        planLength = re.search(r"Plan length:\s*(\d+)\s*step\(s\)", output)
+
+        if not time or not states or not planLength:
+            print("Error with FD output, double check your files", file=sys.stderr)
+            sys.exit(1)
+
+        m["search time"] = float(time.group(1))
+        m["generated states"] = int(states.group(1))
+        m["plan length"] = int(planLength.group(1))
+
+        return m
+    
+    except subprocess.TimeoutExpired:
+
+        m["search time"] = 601
+        m["generated states"] = -1
+        m["plan length"] = 0
+
+        return m
+
 
 
 
@@ -154,7 +164,7 @@ if __name__ == "__main__":
     # compare arg: if we wish to compare this method with the original method, so it runs the problems with the devide and conquer method, saves everything to a json
     # then runs everything with the normal FD way and saves to another json, that gives us material for the compare algo, not a required option
     #if this argument is not provided, no json file will be generated
-    parser.add_argument("-c", action="store_true")
+    parser.add_argument("--c", action="store_true")
     parser.add_argument("domain", choices=["Depots", "Logistics", "miconic"])
     parser.add_argument("problem", type=str)
     parser.add_argument("FDparameter", type=str, choices=["lama-first", "seq-opt-lmcut"])
@@ -174,114 +184,119 @@ if __name__ == "__main__":
     # for each abstract move action, reconstruct the low lvl plan
     actions = []
 
-    with open("sas_plan", "r") as file:
-        for line in file:
-            cleanLine = line.strip().lower()
-            if cleanLine and not cleanLine.startswith(";"):
-                actions.append(cleanLine)
+    if os.path.exists("sas_plan"):
+        with open("sas_plan", "r") as file:
+            for line in file:
+                cleanLine = line.strip().lower()
+                if cleanLine and not cleanLine.startswith(";"):
+                    actions.append(cleanLine)
 
 
-    # getting content for the pddl micro pbs
-    with open(problem, 'r') as file:
-        content = file.read()
-    #limit where we want to stop copying
-    i=content.lower().find("(:init")
-    j=content.lower().find("(:goal")
-    header=content[:i]
+        # getting content for the pddl micro pbs
+        with open(problem, 'r') as file:
+            content = file.read()
+        #limit where we want to stop copying
+        i=content.lower().find("(:init")
+        j=content.lower().find("(:goal")
+        header=content[:i]
 
-    init_u=content[i+7:j] # 7 bc the length of "(:init" and an empty space
-    #then we need to filter it because some problems are formatted differently
+        init_u=content[i+7:j] # 7 bc the length of "(:init" and an empty space
+        #then we need to filter it because some problems are formatted differently
 
-    init = []
-    cpt = 0
-    currfact = ""
-    
-    for char in init_u:
-        if char == '(':
-            cpt += 1
-        if cpt > 0:
-            currfact += char
-            
-        if char == ')':
-            cpt -= 1
-            if cpt == 0:
-                if currfact.strip() != "":
-                    init.append(currfact.strip())
-                currfact = ""
-
-    #the elems have a tab included so stripping all empty charas for later (when we wanna update the memory)
-    init = [fact.strip() for fact in init if fact.strip() != "" and fact.strip() != ")"]
-
-
-    finalPlan = []
-    searchTime=mesuresEtapeA["search time"]
-    states=mesuresEtapeA["generated states"]
-    moveNB=0
-
-
-    for index, action in enumerate(actions):
-        # print(f"\n[pb {index + 1}/{len(actions)}]: {action}")
-        parts1 = action.replace("(", "").replace(")", "").split()
-        plan = []
+        init = []
+        cpt = 0
+        currfact = ""
         
-        if parts1[0] == "move":
-            moveNB+=1
-            filename = f"tempPb{index}.pddl"
-            
-            effectP, effectN = geteffects(abstractDomain, action)
-            generatePDDLProblem(init, effectP, header, filename)
-
-            mesures = runFD(originalDomain, filename,FDpath,args.FDparameter) 
-            searchTime += mesures["search time"]
-            states += mesures["generated states"]
-            
-
-            with open("sas_plan", "r") as file:
-                for line in file:
-                    cleanLine = line.strip().lower()
-
-                    if cleanLine and not cleanLine.startswith(";"):
-                        plan.append(cleanLine)
-                        finalPlan.append(cleanLine)
+        for char in init_u:
+            if char == '(':
+                cpt += 1
+            if cpt > 0:
+                currfact += char
                 
-            os.remove(filename)
-            os.remove("sas_plan")
-        else:
-            plan.append(action)
-            finalPlan.append(action)
+            if char == ')':
+                cpt -= 1
+                if cpt == 0:
+                    if currfact.strip() != "":
+                        init.append(currfact.strip())
+                    currfact = ""
 
-        # update init
-        for step in plan:
+        #the elems have a tab included so stripping all empty charas for later (when we wanna update the memory)
+        init = [fact.strip() for fact in init if fact.strip() != "" and fact.strip() != ")"]
 
-            positif, negatif = geteffects(originalDomain, step)
+
+        finalPlan = []
+        searchTime=mesuresEtapeA["search time"]
+        states=mesuresEtapeA["generated states"]
+        moveNB=0
+
+
+        for index, action in enumerate(actions):
+            # print(f"\n[pb {index + 1}/{len(actions)}]: {action}")
+            parts1 = action.replace("(", "").replace(")", "").split()
+            plan = []
             
-            for n in negatif:
-                if n in init:
-                    init.remove(n)
+            if parts1[0] == "move":
+                moveNB+=1
+                filename = f"tempPb{index}.pddl"
+                
+                effectP, effectN = geteffects(abstractDomain, action)
+                generatePDDLProblem(init, effectP, header, filename)
+
+                mesures = runFD(originalDomain, filename,FDpath,args.FDparameter) 
+                searchTime += mesures["search time"]
+                states += mesures["generated states"]
+                
+
+                with open("sas_plan", "r") as file:
+                    for line in file:
+                        cleanLine = line.strip().lower()
+
+                        if cleanLine and not cleanLine.startswith(";"):
+                            plan.append(cleanLine)
+                            finalPlan.append(cleanLine)
                     
-            for p in positif:
-                if p not in init:
-                    init.append(p)
+                os.remove(filename)
+                os.remove("sas_plan")
+            else:
+                plan.append(action)
+                finalPlan.append(action)
+
+            # update init
+            for step in plan:
+
+                positif, negatif = geteffects(originalDomain, step)
+                
+                for n in negatif:
+                    if n in init:
+                        init.remove(n)
+                        
+                for p in positif:
+                    if p not in init:
+                        init.append(p)
 
 
-# All results ############################################
-    print(f"----------------------------------------------------------------------\n")
-    print(f"Resolution for : {args.domain} problem number {args.problem}\n")
-    print(f"Stats taken for Abstract resolution:\n \n \t {mesuresEtapeA} \n")
-    print(f" Plan length: {len(actions)} \n Within this plan, there are {moveNB} move actions. \n \n")
-    print("Stats taken for the final generated Plan")
-    print(f"\nFinal Plan Length: {len(finalPlan)}")
-    print(f"Total Planner Time: {searchTime} second(s)")
-    print(f"Total generated states: {states}")
+    # All results ############################################
+        print(f"----------------------------------------------------------------------\n")
+        print(f"Resolution for : {args.domain} problem number {args.problem}\n")
+        print(f"Stats taken for Abstract resolution:\n \n \t {mesuresEtapeA} \n")
+        print(f" Plan length: {len(actions)} \n Within this plan, there are {moveNB} move actions. \n \n")
+        print("Stats taken for the final generated Plan")
+        print(f"\nFinal Plan Length: {len(finalPlan)}")
+        print(f"Total Planner Time: {searchTime} second(s)")
+        print(f"Total generated states: {states}")
 
-    
-    with open(f"results/plans/plan{args.domain}{args.problem}.txt", "w") as file:
-        for action in finalPlan:
-            file.write(f"{action}\n")
+        
+        with open(f"results/plans/plan{args.domain}{args.problem}.txt", "w") as file:
+            for action in finalPlan:
+                file.write(f"{action}\n")
 
-    print(f"\n \n Final plan saved in \"plan{args.domain}{args.problem}.txt\" ")
-    print(f"\n----------------------------------------------------------------------\n")
-    ####################################################
+        print(f"\n \n Final plan saved in \"plan{args.domain}{args.problem}.txt\" ")
+        print(f"\n----------------------------------------------------------------------\n")
+        ####################################################
+    else:
+        print("script did not find a plan")
+        searchTime=601
+        finalPlan=[]
 
     if args.c :
 
@@ -292,7 +307,7 @@ if __name__ == "__main__":
             "planlength": len(finalPlan)
         }
 
-        file = "results/ScriptRes.json"
+        file = f"results/json/Script_{args.domain}_{args.FDparameter}.json"
         data = {}
         if os.path.exists(file):
             try:
@@ -320,7 +335,7 @@ if __name__ == "__main__":
             "planlength": mesures2["plan length"]
         }
 
-        file2 = "results/FDRes.json"
+        file2 = f"results/json/FD_{args.domain}_{args.FDparameter}.json"
         data2 = {}
         if os.path.exists(file2):
             try:
