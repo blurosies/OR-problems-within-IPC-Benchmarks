@@ -1,0 +1,4 @@
+#ignoring pddl domain and problem files
+
+original_pbs/** linguist-vendored
+Routing/** linguist-vendored
