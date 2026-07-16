@@ -1,0 +1,112 @@
+{
+    "Depots_01": {
+        "FD parameter": "lama-first",
+        "time": 0.00875,
+        "planlength": 12
+    },
+    "Depots_02": {
+        "FD parameter": "lama-first",
+        "time": 0.022352000000000004,
+        "planlength": 24
+    },
+    "Depots_03": {
+        "FD parameter": "lama-first",
+        "time": 0.135152,
+        "planlength": 119
+    },
+    "Depots_04": {
+        "FD parameter": "lama-first",
+        "time": 0.301503,
+        "planlength": 89
+    },
+    "Depots_05": {
+        "FD parameter": "lama-first",
+        "time": 0.5633130000000002,
+        "planlength": 281
+    },
+    "Depots_06": {
+        "FD parameter": "lama-first",
+        "time": 15.637531000000012,
+        "planlength": 756
+    },
+    "Depots_07": {
+        "FD parameter": "lama-first",
+        "time": 0.020203,
+        "planlength": 23
+    },
+    "Depots_08": {
+        "FD parameter": "lama-first",
+        "time": 0.390867,
+        "planlength": 73
+    },
+    "Depots_09": {
+        "FD parameter": "lama-first",
+        "time": 1.587951,
+        "planlength": 223
+    },
+    "Depots_10": {
+        "FD parameter": "lama-first",
+        "time": 0.149605,
+        "planlength": 40
+    },
+    "Depots_11": {
+        "FD parameter": "lama-first",
+        "time": 0.327689,
+        "planlength": 92
+    },
+    "Depots_12": {
+        "FD parameter": "lama-first",
+        "time": 3.738453999999999,
+        "planlength": 340
+    },
+    "Depots_13": {
+        "FD parameter": "lama-first",
+        "time": 0.051498,
+        "planlength": 29
+    },
+    "Depots_14": {
+        "FD parameter": "lama-first",
+        "time": 0.176762,
+        "planlength": 47
+    },
+    "Depots_15": {
+        "FD parameter": "lama-first",
+        "time": 1.55986,
+        "planlength": 219
+    },
+    "Depots_16": {
+        "FD parameter": "lama-first",
+        "time": 0.0915,
+        "planlength": 33
+    },
+    "Depots_17": {
+        "FD parameter": "lama-first",
+        "time": 0.125297,
+        "planlength": 28
+    },
+    "Depots_18": {
+        "FD parameter": "lama-first",
+        "time": 0.8425239999999998,
+        "planlength": 88
+    },
+    "Depots_19": {
+        "FD parameter": "lama-first",
+        "time": 0.509846,
+        "planlength": 72
+    },
+    "Depots_20": {
+        "FD parameter": "lama-first",
+        "time": 2.9764250000000003,
+        "planlength": 149
+    },
+    "Depots_21": {
+        "FD parameter": "lama-first",
+        "time": 0.4864049999999999,
+        "planlength": 37
+    },
+    "Depots_22": {
+        "FD parameter": "lama-first",
+        "time": 15.554672000000002,
+        "planlength": 162
+    }
+}

@@ -1,0 +1,417 @@
+{
+    "Logistics_01": {
+        "FD parameter": "lama-first",
+        "time": 0.002208,
+        "planlength": 21
+    },
+    "Logistics_02": {
+        "FD parameter": "lama-first",
+        "time": 0.002087,
+        "planlength": 19
+    },
+    "Logistics_03": {
+        "FD parameter": "lama-first",
+        "time": 0.003688,
+        "planlength": 15
+    },
+    "Logistics_04": {
+        "FD parameter": "lama-first",
+        "time": 0.002872,
+        "planlength": 27
+    },
+    "Logistics_05": {
+        "FD parameter": "lama-first",
+        "time": 0.002173,
+        "planlength": 18
+    },
+    "Logistics_06": {
+        "FD parameter": "lama-first",
+        "time": 0.003215,
+        "planlength": 8
+    },
+    "Logistics_07": {
+        "FD parameter": "lama-first",
+        "time": 0.005186,
+        "planlength": 25
+    },
+    "Logistics_08": {
+        "FD parameter": "lama-first",
+        "time": 0.003004,
+        "planlength": 14
+    },
+    "Logistics_09": {
+        "FD parameter": "lama-first",
+        "time": 0.00486,
+        "planlength": 28
+    },
+    "Logistics_10": {
+        "FD parameter": "lama-first",
+        "time": 0.002577,
+        "planlength": 24
+    },
+    "Logistics_11": {
+        "FD parameter": "lama-first",
+        "time": 0.003619,
+        "planlength": 40
+    },
+    "Logistics_12": {
+        "FD parameter": "lama-first",
+        "time": 0.007054,
+        "planlength": 44
+    },
+    "Logistics_13": {
+        "FD parameter": "lama-first",
+        "time": 0.005733,
+        "planlength": 31
+    },
+    "Logistics_14": {
+        "FD parameter": "lama-first",
+        "time": 0.004267,
+        "planlength": 46
+    },
+    "Logistics_15": {
+        "FD parameter": "lama-first",
+        "time": 0.003995,
+        "planlength": 39
+    },
+    "Logistics_16": {
+        "FD parameter": "lama-first",
+        "time": 0.003709,
+        "planlength": 31
+    },
+    "Logistics_17": {
+        "FD parameter": "lama-first",
+        "time": 0.009841,
+        "planlength": 50
+    },
+    "Logistics_18": {
+        "FD parameter": "lama-first",
+        "time": 0.005294,
+        "planlength": 44
+    },
+    "Logistics_20": {
+        "FD parameter": "lama-first",
+        "time": 0.007232,
+        "planlength": 61
+    },
+    "Logistics_21": {
+        "FD parameter": "lama-first",
+        "time": 0.006524,
+        "planlength": 44
+    },
+    "Logistics_22": {
+        "FD parameter": "lama-first",
+        "time": 0.011999,
+        "planlength": 71
+    },
+    "Logistics_23": {
+        "FD parameter": "lama-first",
+        "time": 0.014075,
+        "planlength": 81
+    },
+    "Logistics_24": {
+        "FD parameter": "lama-first",
+        "time": 0.01918,
+        "planlength": 68
+    },
+    "Logistics_25": {
+        "FD parameter": "lama-first",
+        "time": 0.015347,
+        "planlength": 65
+    },
+    "Logistics_26": {
+        "FD parameter": "lama-first",
+        "time": 0.012004,
+        "planlength": 74
+    },
+    "Logistics_27": {
+        "FD parameter": "lama-first",
+        "time": 0.020073,
+        "planlength": 86
+    },
+    "Logistics_28": {
+        "FD parameter": "lama-first",
+        "time": 0.012658,
+        "planlength": 70
+    },
+    "Logistics_29": {
+        "FD parameter": "lama-first",
+        "time": 0.006962,
+        "planlength": 27
+    },
+    "Logistics_30": {
+        "FD parameter": "lama-first",
+        "time": 0.009493,
+        "planlength": 33
+    },
+    "Logistics_31": {
+        "FD parameter": "lama-first",
+        "time": 0.021056,
+        "planlength": 56
+    },
+    "Logistics_32": {
+        "FD parameter": "lama-first",
+        "time": 0.044423,
+        "planlength": 65
+    },
+    "Logistics_33": {
+        "FD parameter": "lama-first",
+        "time": 0.020273,
+        "planlength": 95
+    },
+    "Logistics_34": {
+        "FD parameter": "lama-first",
+        "time": 0.015311,
+        "planlength": 90
+    },
+    "Logistics_35": {
+        "FD parameter": "lama-first",
+        "time": 0.023536,
+        "planlength": 100
+    },
+    "Logistics_36": {
+        "FD parameter": "lama-first",
+        "time": 0.028047,
+        "planlength": 103
+    },
+    "Logistics_37": {
+        "FD parameter": "lama-first",
+        "time": 0.034256,
+        "planlength": 128
+    },
+    "Logistics_38": {
+        "FD parameter": "lama-first",
+        "time": 0.019014,
+        "planlength": 83
+    },
+    "Logistics_39": {
+        "FD parameter": "lama-first",
+        "time": 0.033956,
+        "planlength": 113
+    },
+    "Logistics_40": {
+        "FD parameter": "lama-first",
+        "time": 0.024637,
+        "planlength": 95
+    },
+    "Logistics_41": {
+        "FD parameter": "lama-first",
+        "time": 0.038468,
+        "planlength": 125
+    },
+    "Logistics_42": {
+        "FD parameter": "lama-first",
+        "time": 0.031648,
+        "planlength": 113
+    },
+    "Logistics_43": {
+        "FD parameter": "lama-first",
+        "time": 0.035065,
+        "planlength": 119
+    },
+    "Logistics_44": {
+        "FD parameter": "lama-first",
+        "time": 0.028963,
+        "planlength": 109
+    },
+    "Logistics_45": {
+        "FD parameter": "lama-first",
+        "time": 0.040267,
+        "planlength": 121
+    },
+    "Logistics_46": {
+        "FD parameter": "lama-first",
+        "time": 0.03197,
+        "planlength": 112
+    },
+    "Logistics_47": {
+        "FD parameter": "lama-first",
+        "time": 0.038582,
+        "planlength": 131
+    },
+    "Logistics_48": {
+        "FD parameter": "lama-first",
+        "time": 0.032975,
+        "planlength": 116
+    },
+    "Logistics_49": {
+        "FD parameter": "lama-first",
+        "time": 0.044563,
+        "planlength": 142
+    },
+    "Logistics_50": {
+        "FD parameter": "lama-first",
+        "time": 0.074362,
+        "planlength": 149
+    },
+    "Logistics_51": {
+        "FD parameter": "lama-first",
+        "time": 0.110659,
+        "planlength": 175
+    },
+    "Logistics_52": {
+        "FD parameter": "lama-first",
+        "time": 0.124832,
+        "planlength": 169
+    },
+    "Logistics_53": {
+        "FD parameter": "lama-first",
+        "time": 0.074278,
+        "planlength": 146
+    },
+    "Logistics_54": {
+        "FD parameter": "lama-first",
+        "time": 0.085506,
+        "planlength": 161
+    },
+    "Logistics_55": {
+        "FD parameter": "lama-first",
+        "time": 0.123493,
+        "planlength": 159
+    },
+    "Logistics_56": {
+        "FD parameter": "lama-first",
+        "time": 0.097365,
+        "planlength": 149
+    },
+    "Logistics_57": {
+        "FD parameter": "lama-first",
+        "time": 0.126674,
+        "planlength": 181
+    },
+    "Logistics_58": {
+        "FD parameter": "lama-first",
+        "time": 0.110853,
+        "planlength": 167
+    },
+    "Logistics_59": {
+        "FD parameter": "lama-first",
+        "time": 0.113906,
+        "planlength": 195
+    },
+    "Logistics_60": {
+        "FD parameter": "lama-first",
+        "time": 0.135133,
+        "planlength": 171
+    },
+    "Logistics_61": {
+        "FD parameter": "lama-first",
+        "time": 0.140602,
+        "planlength": 190
+    },
+    "Logistics_62": {
+        "FD parameter": "lama-first",
+        "time": 0.203575,
+        "planlength": 221
+    },
+    "Logistics_63": {
+        "FD parameter": "lama-first",
+        "time": 0.17382,
+        "planlength": 198
+    },
+    "Logistics_64": {
+        "FD parameter": "lama-first",
+        "time": 0.144673,
+        "planlength": 195
+    },
+    "Logistics_65": {
+        "FD parameter": "lama-first",
+        "time": 0.364719,
+        "planlength": 221
+    },
+    "Logistics_66": {
+        "FD parameter": "lama-first",
+        "time": 0.187118,
+        "planlength": 214
+    },
+    "Logistics_67": {
+        "FD parameter": "lama-first",
+        "time": 0.171326,
+        "planlength": 206
+    },
+    "Logistics_68": {
+        "FD parameter": "lama-first",
+        "time": 0.234005,
+        "planlength": 219
+    },
+    "Logistics_69": {
+        "FD parameter": "lama-first",
+        "time": 0.274089,
+        "planlength": 222
+    },
+    "Logistics_70": {
+        "FD parameter": "lama-first",
+        "time": 0.251795,
+        "planlength": 212
+    },
+    "Logistics_71": {
+        "FD parameter": "lama-first",
+        "time": 0.182917,
+        "planlength": 200
+    },
+    "Logistics_72": {
+        "FD parameter": "lama-first",
+        "time": 0.192311,
+        "planlength": 214
+    },
+    "Logistics_73": {
+        "FD parameter": "lama-first",
+        "time": 0.19702,
+        "planlength": 219
+    },
+    "Logistics_74": {
+        "FD parameter": "lama-first",
+        "time": 0.362059,
+        "planlength": 246
+    },
+    "Logistics_75": {
+        "FD parameter": "lama-first",
+        "time": 0.359244,
+        "planlength": 253
+    },
+    "Logistics_76": {
+        "FD parameter": "lama-first",
+        "time": 0.310542,
+        "planlength": 234
+    },
+    "Logistics_77": {
+        "FD parameter": "lama-first",
+        "time": 0.399568,
+        "planlength": 243
+    },
+    "Logistics_78": {
+        "FD parameter": "lama-first",
+        "time": 0.381777,
+        "planlength": 235
+    },
+    "Logistics_79": {
+        "FD parameter": "lama-first",
+        "time": 0.658768,
+        "planlength": 267
+    },
+    "Logistics_80": {
+        "FD parameter": "lama-first",
+        "time": 0.421896,
+        "planlength": 245
+    },
+    "Logistics_81": {
+        "FD parameter": "lama-first",
+        "time": 0.393578,
+        "planlength": 243
+    },
+    "Logistics_82": {
+        "FD parameter": "lama-first",
+        "time": 0.425461,
+        "planlength": 252
+    },
+    "Logistics_83": {
+        "FD parameter": "lama-first",
+        "time": 0.566268,
+        "planlength": 274
+    },
+    "Logistics_84": {
+        "FD parameter": "lama-first",
+        "time": 0.545498,
+        "planlength": 276
+    }
+}

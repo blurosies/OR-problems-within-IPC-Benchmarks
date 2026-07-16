@@ -1,4 +1,4 @@
 bin
 *.txt
 *.sas
-src/compare.py
+tests
