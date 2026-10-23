@@ -4,7 +4,6 @@ import argparse , subprocess, json
 
 def runFD (domain, problem, FDpath, FDparameter):
     #seq-opt-lmcut
-    #seq-sat-lama-2011
     #lama-first     
     m = {"search time":0.0, "generated states":0, "plan length":0}
 
@@ -32,8 +31,8 @@ def runFD (domain, problem, FDpath, FDparameter):
 
         return m
     
-    except subprocess.TimeoutExpired:
-
+    except subprocess.TimeoutExpired: 
+        #pb timed out here
         m["search time"] = 601
         m["generated states"] = -1
         m["plan length"] = 0
@@ -43,9 +42,7 @@ def runFD (domain, problem, FDpath, FDparameter):
 
 
 
-
-
-# update init state of next problem
+# update init state of next sub problem
 def geteffects (domain,action):
     # 1st element is action name, rest are the action s args
     actiondecoupe= action.replace("(","").replace(")","").split()
@@ -63,7 +60,7 @@ def geteffects (domain,action):
             startE = content.find(":effect", act)
 
             endP = content.find(")", startP)
-            # need parenthesis parsing to find end of effects
+            # parenthesis parsing to find end of effects
             endE = startE
 
             started = False
@@ -123,7 +120,6 @@ def geteffects (domain,action):
 
 
 
-
 def generatePDDLProblem(initMemory, effectsPos, header, output):
     initBlock = "\n        ".join(initMemory)
     
@@ -165,14 +161,17 @@ if __name__ == "__main__":
     # then runs everything with the normal FD way and saves to another json, that gives us material for the compare algo, not a required option
     #if this argument is not provided, no json file will be generated
     parser.add_argument("--c", action="store_true")
-    parser.add_argument("domain", choices=["Depots", "Logistics", "miconic"])
+
+    # SATTELITE NOT AVAILABLE
+    parser.add_argument("domain", choices=["Depots", "Logistics", "miconic","satellite"])
     parser.add_argument("problem", type=str)
     parser.add_argument("FDparameter", type=str, choices=["lama-first", "seq-opt-lmcut"])
 
     args = parser.parse_args()
 
+    # sorry i hard coded these paths, please replace with your own path to this folder
     originalDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/original_pbs/{args.domain}/domain.pddl"
-    abstractDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/Routing/{args.domain}/domain.pddl"
+    abstractDomain = f"/home/ange/OR-problems-within-IPC-Benchmarks/ABSd/{args.domain}/domain.pddl"
     problem = f"/home/ange/OR-problems-within-IPC-Benchmarks/original_pbs/{args.domain}/pb{args.problem}.pddl"
     FDpath="/home/ange/fast-downward/fast-downward.py"
 
@@ -200,8 +199,9 @@ if __name__ == "__main__":
         j=content.lower().find("(:goal")
         header=content[:i]
 
-        init_u=content[i+7:j] # 7 bc the length of "(:init" and an empty space
-        #then we need to filter it because some problems are formatted differently
+        init_u=content[i+7:j].lower() # 7 bc the length of "(:init" and an empty space
+        #then we need to filter 
+        # it because some problems are formatted differently
 
         init = []
         cpt = 0
@@ -235,7 +235,7 @@ if __name__ == "__main__":
             parts1 = action.replace("(", "").replace(")", "").split()
             plan = []
             
-            if parts1[0] == "move":
+            if parts1[0] == "schedule":
                 moveNB+=1
                 filename = f"tempPb{index}.pddl"
                 

@@ -12,12 +12,14 @@
  
  To run the solver and validator, ensure you have the following installed and configured:
 * **Python 3**
-* **Fast Downward** (The path must be configured in `Solver.py`)
+* **Fast Downward** (your own path must be configured in `Solver.py`) !!!
 * **Planutils / VAL** (For plan validation)
 
 ## Project Structure :
 
 ```text
+ABSd/               # Abstracted domains 
+
 original_pbs/          # Standard IPC benchmark domain and problem files
     ├── Depots/
     ├── Logistics/
@@ -36,14 +38,16 @@ src/
 
 tests/                 # Bash scripts for automated batch testing
     ├── Depots.sh
-    ├── Logistics.sh
-    └── miconic.sh
-    ...
+    ├── ...
+    └── ...
+    
 ```
 
 ## Solver Usage :
 
 #### Required Arguments :
+
+(for the domain and problems, please also Check Solver.py again to replace with your own path)
 
 *   **domain** : The IPC benchmark domain. (original domain MUST be in **/original_pbs**)
 *   **problem** : The specific problem ID (e.g., 18, 04 , each domain has a different amount of problems).
@@ -80,7 +84,7 @@ python3 src/compare.py --comp results/Script_Depots_lama-first.json results/FD_D
 
 ## Plan Validation :
 
-To mathematically verify that the generated plans correctly transition the initial state to the goal state, use the VAL tool provided by planutils.
+To verify that the generated plans correctly transition the initial state to the goal state, use the VAL tool provided by planutils.
 
 ```bash
 #command to activate, replace "planning_env" by your own planning env directory

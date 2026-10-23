@@ -2,6 +2,7 @@ import argparse, json
 import matplotlib.pyplot as plt
 import re , sys , math
 
+
 def pbnum(problem_key):
     match = re.search(r"_(\d+)", problem_key)
     if match:
@@ -16,11 +17,6 @@ def score(time_val, plan_len):
         return 1.0
     # IPC logarithmic decay formula
     return 1.0 - (math.log(time_val) / math.log(600.0))
-
-
-
-
-
 
 
 
@@ -82,18 +78,22 @@ if __name__ == "__main__":
             time_data2.append(data2[pb].get("time", 0.0))
 
     plt.figure(figsize=(10, 6))
-    plt.plot(x_labels, time_data1, label='Data 1', color='red', marker='o', linestyle='-', linewidth=2)
-    plt.plot(x_labels, time_data2, label='Data 2', color='blue', marker='x', linestyle='--', linewidth=2)
+    plt.plot(x_labels, time_data1, label='Script', color='seagreen', linewidth=2)
+    plt.plot(x_labels, time_data2, label='Fast Downward', color='indigo', linewidth=2)
 
 
     plt.title('Execution Time vs Problem Size', fontsize=14, fontweight='bold')
     plt.xlabel('Problem Number', fontsize=12)
     plt.ylabel('Time (seconds)', fontsize=12)
     plt.yscale('log')
+    plt.ylim(0.0001, 800) 
     plt.xticks(rotation=45, ha='right', fontsize=8)
     plt.legend(fontsize=12)
     plt.grid(True, which="both", ls="--", alpha=0.4)
     plt.tight_layout()
+    plt.axhline(1, color='firebrick',linestyle='--',linewidth=3)
+    plt.axhline(600, color='firebrick',linestyle='--',linewidth=3)
+    plt.savefig("Depots_lama-first_speed.pdf",bbox_inches='tight')
     plt.show()
 
     
@@ -133,8 +133,8 @@ if __name__ == "__main__":
         x_indices2 = [i + 0.2 for i in range(len(x_labels))]
 
         plt.figure(figsize=(12, 6))
-        plt.bar(x_indices1, len_data1, width=0.4, label='Data 1', color='red')
-        plt.bar(x_indices2, len_data2, width=0.4, label='Data 2', color='blue')
+        plt.bar(x_indices1, len_data1, width=0.4, label='Script', color='seagreen')
+        plt.bar(x_indices2, len_data2, width=0.4, label='Fast Downward', color='indigo')
 
         plt.title('Plan Length vs Problem Size', fontsize=14, fontweight='bold')
         plt.xlabel('Problem Number', fontsize=12)
@@ -143,6 +143,7 @@ if __name__ == "__main__":
         plt.legend(fontsize=12)
         plt.grid(True, axis="y", ls="--", alpha=0.4)
         plt.tight_layout()
+        plt.savefig("Depots_lama-first_len.pdf",bbox_inches='tight')
         plt.show()
 
 

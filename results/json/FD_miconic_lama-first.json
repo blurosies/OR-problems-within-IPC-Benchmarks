@@ -1,202 +1,202 @@
 {
     "miconic_001": {
         "FD parameter": "lama-first",
-        "time": 0.001913,
+        "time": 0.001542,
         "planlength": 4
     },
     "miconic_002": {
         "FD parameter": "lama-first",
-        "time": 0.002317,
+        "time": 0.001366,
         "planlength": 3
     },
     "miconic_003": {
         "FD parameter": "lama-first",
-        "time": 0.001367,
+        "time": 0.001931,
         "planlength": 4
     },
     "miconic_004": {
         "FD parameter": "lama-first",
-        "time": 0.001356,
+        "time": 0.001368,
         "planlength": 4
     },
     "miconic_005": {
         "FD parameter": "lama-first",
-        "time": 0.001397,
+        "time": 0.001403,
         "planlength": 4
     },
     "miconic_006": {
         "FD parameter": "lama-first",
-        "time": 0.001497,
+        "time": 0.001663,
         "planlength": 8
     },
     "miconic_007": {
         "FD parameter": "lama-first",
-        "time": 0.002623,
+        "time": 0.00168,
         "planlength": 8
     },
     "miconic_008": {
         "FD parameter": "lama-first",
-        "time": 0.001616,
+        "time": 0.002589,
         "planlength": 8
     },
     "miconic_009": {
         "FD parameter": "lama-first",
-        "time": 0.0015,
+        "time": 0.001532,
         "planlength": 7
     },
     "miconic_010": {
         "FD parameter": "lama-first",
-        "time": 0.002634,
+        "time": 0.001549,
         "planlength": 8
     },
     "miconic_011": {
         "FD parameter": "lama-first",
-        "time": 0.00308,
+        "time": 0.003032,
         "planlength": 13
     },
     "miconic_012": {
         "FD parameter": "lama-first",
-        "time": 0.001729,
+        "time": 0.001817,
         "planlength": 12
     },
     "miconic_013": {
         "FD parameter": "lama-first",
-        "time": 0.002942,
+        "time": 0.001729,
         "planlength": 12
     },
     "miconic_014": {
         "FD parameter": "lama-first",
-        "time": 0.001679,
+        "time": 0.001697,
         "planlength": 12
     },
     "miconic_015": {
         "FD parameter": "lama-first",
-        "time": 0.001845,
+        "time": 0.001807,
         "planlength": 11
     },
     "miconic_016": {
         "FD parameter": "lama-first",
-        "time": 0.001909,
+        "time": 0.003374,
         "planlength": 15
     },
     "miconic_017": {
         "FD parameter": "lama-first",
-        "time": 0.003359,
+        "time": 0.001908,
         "planlength": 16
     },
     "miconic_018": {
         "FD parameter": "lama-first",
-        "time": 0.003458,
+        "time": 0.003481,
         "planlength": 17
     },
     "miconic_019": {
         "FD parameter": "lama-first",
-        "time": 0.001947,
+        "time": 0.002013,
         "planlength": 18
     },
     "miconic_020": {
         "FD parameter": "lama-first",
-        "time": 0.002023,
+        "time": 0.002029,
         "planlength": 20
     },
     "miconic_021": {
         "FD parameter": "lama-first",
-        "time": 0.002231,
+        "time": 0.003988,
         "planlength": 23
     },
     "miconic_022": {
         "FD parameter": "lama-first",
-        "time": 0.002176,
+        "time": 0.003842,
         "planlength": 20
     },
     "miconic_023": {
         "FD parameter": "lama-first",
-        "time": 0.002141,
+        "time": 0.003067,
         "planlength": 18
     },
     "miconic_024": {
         "FD parameter": "lama-first",
-        "time": 0.00218,
+        "time": 0.003966,
         "planlength": 18
     },
     "miconic_025": {
         "FD parameter": "lama-first",
-        "time": 0.00224,
+        "time": 0.002297,
         "planlength": 22
     },
     "miconic_026": {
         "FD parameter": "lama-first",
-        "time": 0.004383,
+        "time": 0.004334,
         "planlength": 24
     },
     "miconic_027": {
         "FD parameter": "lama-first",
-        "time": 0.003692,
+        "time": 0.004281,
         "planlength": 21
     },
     "miconic_028": {
         "FD parameter": "lama-first",
-        "time": 0.004424,
+        "time": 0.002632,
         "planlength": 25
     },
     "miconic_029": {
         "FD parameter": "lama-first",
-        "time": 0.003362,
+        "time": 0.0047,
         "planlength": 21
     },
     "miconic_030": {
         "FD parameter": "lama-first",
-        "time": 0.002588,
+        "time": 0.002887,
         "planlength": 25
     },
     "miconic_031": {
         "FD parameter": "lama-first",
-        "time": 0.002899,
+        "time": 0.003344,
         "planlength": 28
     },
     "miconic_032": {
         "FD parameter": "lama-first",
-        "time": 0.002987,
+        "time": 0.003256,
         "planlength": 31
     },
     "miconic_033": {
         "FD parameter": "lama-first",
-        "time": 0.004872,
+        "time": 0.003497,
         "planlength": 23
     },
     "miconic_034": {
         "FD parameter": "lama-first",
-        "time": 0.002935,
+        "time": 0.005328,
         "planlength": 26
     },
     "miconic_035": {
         "FD parameter": "lama-first",
-        "time": 0.005432,
+        "time": 0.003908,
         "planlength": 33
     },
     "miconic_036": {
         "FD parameter": "lama-first",
-        "time": 0.003316,
+        "time": 0.005962,
         "planlength": 31
     },
     "miconic_037": {
         "FD parameter": "lama-first",
-        "time": 0.003493,
+        "time": 0.003375,
         "planlength": 30
     },
     "miconic_038": {
         "FD parameter": "lama-first",
-        "time": 0.004426,
+        "time": 0.005833,
         "planlength": 33
     },
     "miconic_039": {
         "FD parameter": "lama-first",
-        "time": 0.005647,
+        "time": 0.006009,
         "planlength": 36
     },
     "miconic_040": {
         "FD parameter": "lama-first",
-        "time": 0.00328,
+        "time": 0.003324,
         "planlength": 30
     },
     "miconic_041": {
